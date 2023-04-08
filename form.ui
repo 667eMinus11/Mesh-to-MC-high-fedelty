@@ -90,12 +90,12 @@
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="spinBox"/>
-     </item>
-     <item>
-      <widget class="QSlider" name="horizontalSlider">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+      <widget class="QDoubleSpinBox" name="voxelize_spin_box">
+       <property name="maximum">
+        <double>1.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>0.050000000000000</double>
        </property>
       </widget>
      </item>

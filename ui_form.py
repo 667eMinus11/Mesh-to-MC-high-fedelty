@@ -15,9 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QGridLayout, QHBoxLayout, QLabel,
-    QLineEdit, QPushButton, QSizePolicy, QSlider,
-    QSpacerItem, QSpinBox, QWidget)
+from PySide6.QtWidgets import (QApplication, QDoubleSpinBox, QGridLayout, QHBoxLayout,
+    QLabel, QLineEdit, QPushButton, QSizePolicy,
+    QSpacerItem, QWidget)
 
 class Ui_Widget(object):
     def setupUi(self, Widget):
@@ -87,16 +87,12 @@ class Ui_Widget(object):
 
         self.horizontalLayout_2.addWidget(self.label_2)
 
-        self.spinBox = QSpinBox(Widget)
-        self.spinBox.setObjectName(u"spinBox")
+        self.voxelize_spin_box = QDoubleSpinBox(Widget)
+        self.voxelize_spin_box.setObjectName(u"voxelize_spin_box")
+        self.voxelize_spin_box.setMaximum(1.000000000000000)
+        self.voxelize_spin_box.setValue(0.050000000000000)
 
-        self.horizontalLayout_2.addWidget(self.spinBox)
-
-        self.horizontalSlider = QSlider(Widget)
-        self.horizontalSlider.setObjectName(u"horizontalSlider")
-        self.horizontalSlider.setOrientation(Qt.Horizontal)
-
-        self.horizontalLayout_2.addWidget(self.horizontalSlider)
+        self.horizontalLayout_2.addWidget(self.voxelize_spin_box)
 
         self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
