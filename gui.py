@@ -76,15 +76,22 @@ class MainWindow(QWidget):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     class fake_convertor(AbstractMeshConvertor):
+        def __init__(self) -> None:
+            super().__init__()
+            self._converted_object = None
+
         def convert(self, stl_file: str, voxelize: float):
             print(f"stl: {stl_file}")
             print(f"voxelize: {voxelize}")
+            self._converted_object = f'file{stl_file}@{voxelize}'
 
         def show(self):
-            print("Showing preview")
+            assert(self._converted_object is not None)
+            print(f"Showing preview for {self._converted_object}")
 
         def save_to_file(self, output_file: str):
-            print(f'Saving to {output_file}')
+            assert(self._converted_object is not None)
+            print(f'Saving {self._converted_object} to {output_file}')
     main_window = MainWindow(fake_convertor())
     main_window.show()
     sys.exit(app.exec())
