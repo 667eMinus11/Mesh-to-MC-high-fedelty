@@ -1,6 +1,6 @@
 import sys
 
-from PySide6.QtWidgets import QApplication, QWidget, QFileDialog
+from PySide6.QtWidgets import QApplication, QWidget, QFileDialog, QMessageBox, QErrorMessage
 
 # Important:
 # You need to run the following command to generate the ui_form.py file
@@ -31,14 +31,46 @@ class MainWindow(QWidget):
         file_path = QFileDialog.getOpenFileName(self, "Open MESH file", filter="MESH (*.mesh)")[0]
         self.ui.mesh_line_edit.setText(file_path)
 
+    @property
+    def stl_file(self) -> str:
+        return self.ui.stl_line_edit.text()
+
+    @property
+    def mesh_file(self) -> str:
+        return self.ui.mesh_line_edit.text()
+
+    @property
+    def voxelize_value(self) -> str:
+        return self.ui.voxelize_spin_box.value()
+
     def convert(self):
-        self.convertor.convert(self.ui.stl_line_edit.text(), self.ui.voxelize_spin_box.value())
-        output_file_path: str = QFileDialog.getSaveFileName(self, "Save schem file", filter="Schem (*.schem)")[0]
-        if output_file_path != "":
+        try:
+            if self.stl_file == "":
+                raise Exception("Missing stl file")
+            self.convertor.convert(self.stl_file, self.voxelize_value)
+        except Exception as e:
+            QErrorMessage(self).showMessage(f'Convertion failed with error: "{e}"')
+            return
+
+        preview = QMessageBox.question(self, "Preview file?", "Do you want to preview the object?", QMessageBox.Yes | QMessageBox.No)
+        if preview == QMessageBox.Yes:
+            try:
+                self.convertor.show()
+            except Exception as e:
+                QErrorMessage(self).showMessage(f'Preview failed with error: "{e}"')
+
+
+        save = QMessageBox.question(self, "Safe to file?", "Do you want to save the schematics to a file?", QMessageBox.Yes | QMessageBox.No)
+        if save == QMessageBox.Yes:
+            output_file_path: str = QFileDialog.getSaveFileName(self, "Save schem file", filter="Schem (*.schem)")[0]
             # Enforce the suffix schem
             output_file_path = output_file_path.removesuffix(".schem") + ".schem"
-            self.convertor.save_to_file(output_file_path)
-        # self.convertor.show()
+            try:
+                if output_file_path.removesuffix(".schem") == "":
+                    raise Exception("Empty file name")
+                self.convertor.save_to_file(output_file_path)
+            except Exception as e:
+                QErrorMessage(self).showMessage(f'Saving failed with error: "{e}"')
 
 
 if __name__ == "__main__":
