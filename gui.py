@@ -8,12 +8,12 @@ from PySide6.QtWidgets import QApplication, QWidget, QFileDialog
 #     pyside2-uic form.ui -o ui_form.py
 from ui_form import Ui_Widget
 
-from convertor import MeshConvertor
+from abstract_convertor import AbstractMeshConvertor
 
 
 class MainWindow(QWidget):
-    def __init__(self, convertor: MeshConvertor, parent=None):
-        self.convertor: MeshConvertor = convertor
+    def __init__(self, convertor: AbstractMeshConvertor, parent=None):
+        self.convertor: AbstractMeshConvertor = convertor
 
         super().__init__(parent)
         self.ui = Ui_Widget()
@@ -37,7 +37,7 @@ class MainWindow(QWidget):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    class fake_convertor(MeshConvertor):
+    class fake_convertor(AbstractMeshConvertor):
         def convert(self, stl_file: str, voxelize: float):
             print(f"stl: {stl_file}")
             print(f"voxelize: {voxelize}")

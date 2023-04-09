@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class MeshConvertor(ABC):
+class AbstractMeshConvertor(ABC):
     @abstractmethod
     def convert(self, stl_file: str, voxelize: float):
         ...
