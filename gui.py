@@ -33,6 +33,12 @@ class MainWindow(QWidget):
 
     def convert(self):
         self.convertor.convert(self.ui.stl_line_edit.text(), self.ui.voxelize_spin_box.value())
+        output_file_path: str = QFileDialog.getSaveFileName(self, "Save schem file", filter="Schem (*.schem)")[0]
+        if output_file_path != "":
+            # Enforce the suffix schem
+            output_file_path = output_file_path.removesuffix(".schem") + ".schem"
+            self.convertor.save_to_file(output_file_path)
+        # self.convertor.show()
 
 
 if __name__ == "__main__":
@@ -41,6 +47,12 @@ if __name__ == "__main__":
         def convert(self, stl_file: str, voxelize: float):
             print(f"stl: {stl_file}")
             print(f"voxelize: {voxelize}")
+
+        def show(self):
+            print("Showing preview")
+
+        def save_to_file(self, output_file: str):
+            print(f'Saving to {output_file}')
     main_window = MainWindow(fake_convertor())
     main_window.show()
     sys.exit(app.exec())
